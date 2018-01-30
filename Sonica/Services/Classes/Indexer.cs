@@ -39,7 +39,7 @@ namespace Services.Classes
 		public static void Init()
 		{
 
-			string _LibraryRoot = ConfigurationManager.AppSettings["LibraryRoot"];
+			_LibraryRoot = ConfigurationManager.AppSettings["LibraryRoot"];
 			if (!Directory.Exists(_LibraryRoot))
 			{
 				Directory.CreateDirectory(_LibraryRoot);
@@ -53,6 +53,8 @@ namespace Services.Classes
 			}
 
 			Load();
+
+			MaintainIndex();
 
 		}
 
@@ -84,12 +86,14 @@ namespace Services.Classes
 
 			foreach(string fn in Directory.EnumerateFiles(_LibraryRoot, "*.mp3", SearchOption.AllDirectories))
 			{
-				if(!_Data.ContainsKey(fn))
+				string Key = fn.Replace(_LibraryRoot, string.Empty).Base64Encode();
+
+				if (!_Data.ContainsKey(Key))
 				{
 					_Data
 						.Add
 						(
-							fn.Base64Encode(),
+							Key,
 							GetTrack(fn)
 						);
 				}
@@ -102,7 +106,7 @@ namespace Services.Classes
 			
 			foreach(string k in _Data.Keys.ToList())
 			{
-				if(!File.Exists(k))
+				if(!File.Exists(_Data[k].FilePath))
 				{
 					_Data.Remove(k);
 				}
@@ -120,8 +124,7 @@ namespace Services.Classes
 
 			var tagReader = TagLib.File.Create(FilePath);
 
-
-			r.Key = FilePath.Base64Encode();
+			r.Key = FilePath.Replace(_LibraryRoot, string.Empty).Base64Encode();
 			r.Album = tagReader.Tag.Album;
 			r.Artist = tagReader.Tag.AlbumArtists.FirstOrDefault() ?? "N/A";
 			r.Title = tagReader.Tag.Title;
