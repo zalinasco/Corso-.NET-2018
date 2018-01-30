@@ -2,38 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 
 namespace Services.Models
 {
-    public class Track
-    {
-        public string FilePath
-        {
-            get; set;
-        }
+	public class Track
+	{
 
-        public string Title
-        {
-            get; set; 
-        }
+		[XmlIgnore]
+		[ScriptIgnore]
+		public string FilePath
+		{
+			get; set;
+		}
 
-        public string Album
-        {
-            get; set;
-        }
+		public string Key
+		{
+			get; set;
+		}
 
-        public int TrackNumber
-        {
-            get; set;
-        }
+		public string Title
+		{
+			get; set;
+		}
 
-        public int Duration
-        {
-            get; set;
-        }
+		public string Album
+		{
+			get; set;
+		}
+
+		public string Artist
+		{
+			get; set;
+		}
+
+		public uint Number
+		{
+			get; set;
+		}
+
+		public long Duration
+		{
+			get; set;
+		}
 
 
-    }
+	}
 
 
 }

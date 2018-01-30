@@ -1,4 +1,6 @@
-﻿using Services.Models;
+﻿using Newtonsoft.Json;
+using Services.Classes.Extensions;
+using Services.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +15,26 @@ namespace Services.Classes
 	{
 		private static Dictionary<string, Track> _Data = new Dictionary<string, Track>();
 		private static string _LibraryRoot;
+		private static string _IndexFilePath;
+
+		internal static List<Track> List(int PageNumber, int PageLenght)
+		{
+
+			return
+				_Data
+				.Values
+				.Skip(PageLenght * PageNumber)
+				.Take(PageLenght)
+				.ToList();
+
+		}
+
+		internal static Track Track(string Key)
+		{
+
+			return _Data[Key];
+
+		}
 
 		public static void Init()
 		{
@@ -23,15 +45,37 @@ namespace Services.Classes
 				Directory.CreateDirectory(_LibraryRoot);
 			}
 
+			_IndexFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Index.json");
+
+			if(!File.Exists(_IndexFilePath))
+			{
+				Persist();
+			}
+
+			Load();
+
 		}
 
 		private static void MaintainIndex()
 		{
 
-			Load();
 			Remove();
 			Add();
 			Persist();
+
+		}
+
+		private static void Persist()
+		{
+
+			File.WriteAllText(_IndexFilePath, JsonConvert.SerializeObject(_Data));
+
+		}
+
+		private static void Load()
+		{
+
+			_Data = JsonConvert.DeserializeObject<Dictionary<string, Track>>(File.ReadAllText(_IndexFilePath));
 
 		}
 
@@ -42,7 +86,12 @@ namespace Services.Classes
 			{
 				if(!_Data.ContainsKey(fn))
 				{
-
+					_Data
+						.Add
+						(
+							fn.Base64Encode(),
+							GetTrack(fn)
+						);
 				}
 			}
 
@@ -58,6 +107,28 @@ namespace Services.Classes
 					_Data.Remove(k);
 				}
 			}
+
+		}
+
+		private static Track GetTrack(string FilePath)
+		{
+
+			Track r = new Track()
+			{
+				FilePath = FilePath
+			};
+
+			var tagReader = TagLib.File.Create(FilePath);
+
+
+			r.Key = FilePath.Base64Encode();
+			r.Album = tagReader.Tag.Album;
+			r.Artist = tagReader.Tag.AlbumArtists.FirstOrDefault() ?? "N/A";
+			r.Title = tagReader.Tag.Title;
+			r.Number = tagReader.Tag.Track;
+			r.Duration = tagReader.Length;
+
+			return r;
 
 		}
 
