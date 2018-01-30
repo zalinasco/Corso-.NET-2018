@@ -162,6 +162,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Classes\Helpers\" />
+    <Folder Include="Tracks\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

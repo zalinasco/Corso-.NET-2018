@@ -39,7 +39,8 @@ namespace Services.Classes
 		public static void Init()
 		{
 
-			_LibraryRoot = ConfigurationManager.AppSettings["LibraryRoot"];
+			_LibraryRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["LibraryRoot"]) ;
+
 			if (!Directory.Exists(_LibraryRoot))
 			{
 				Directory.CreateDirectory(_LibraryRoot);
