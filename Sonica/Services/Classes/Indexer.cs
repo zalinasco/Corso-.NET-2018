@@ -14,15 +14,53 @@ namespace Services.Classes
 	public class Indexer
 	{
 		private static Dictionary<string, Track> _Data = new Dictionary<string, Track>();
-		private static string _LibraryRoot;
+
+    internal static List<string> ListAlbums()
+    {
+
+      return
+        _Data
+        .Values
+        .Select
+        (
+          o=>o.Album
+        )
+        .Distinct()
+        .ToList();
+
+    }
+
+    internal static List<string> ListArtists()
+    {
+
+      return
+        _Data
+        .Values
+        .Select
+        (
+          o => o.Artist
+        )
+        .Distinct()
+        .ToList();
+
+    }
+
+    private static string _LibraryRoot;
 		private static string _IndexFilePath;
 
-		internal static List<Track> List(int PageNumber, int PageLenght)
+		internal static List<Track> List(int PageNumber, int PageLenght, string Album, string Artist)
 		{
 
 			return
 				_Data
 				.Values
+        .Where
+        (
+          o=>
+          (string.IsNullOrEmpty(Album) || o.Album==Album)
+          ||
+          (string.IsNullOrEmpty(Artist) || o.Artist == Artist)
+        )
 				.Skip(PageLenght * PageNumber)
 				.Take(PageLenght)
 				.ToList();

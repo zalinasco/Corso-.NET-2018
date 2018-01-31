@@ -138,6 +138,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\Extensions\StringExtensions.cs" />
     <Compile Include="Classes\Indexer.cs" />
+    <Compile Include="Controllers\ArtistsController.cs" />
+    <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\TracksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

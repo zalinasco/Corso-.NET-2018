@@ -16,9 +16,9 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Route("")]
-		public List<Track> Get(int PageNumber, int PageLenght)
+		public List<Track> Get(int PageNumber, int PageLenght = 10, string Album = null, string Artist = null)
 		{
-			return Indexer.List(PageNumber, PageLenght);
+			return Indexer.List(PageNumber, PageLenght, Album, Artist);
 		}
 
 		[HttpGet]
@@ -28,19 +28,5 @@ namespace Services.Controllers
 			return Indexer.Track(Key);
 		}
 
-		// POST api/values
-		public void Post([FromBody]string value)
-		{
-		}
-
-		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
-		{
-		}
-
-		// DELETE api/values/5
-		public void Delete(int id)
-		{
-		}
 	}
 }
