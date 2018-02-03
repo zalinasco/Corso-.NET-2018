@@ -51,23 +51,23 @@ namespace Services.Classes
 		internal static List<Track> List(int PageNumber, int PageLenght, string Album, string Artist)
 		{
 
-			return
-				_Data
-				.Values
+      return
+        _Data
+        .Values
         .Where
         (
-          o=>
-          (string.IsNullOrEmpty(Album) || o.Album==Album)
-          ||
+          o =>
+          (string.IsNullOrEmpty(Album) || o.Album == Album)
+          &&
           (string.IsNullOrEmpty(Artist) || o.Artist == Artist)
         )
-				.Skip(PageLenght * PageNumber)
-				.Take(PageLenght)
-				.ToList();
+        .Skip(PageLenght * PageNumber)
+        .Take(PageLenght)
+        .ToList();
 
-		}
+    }
 
-		internal static Track Track(string Key)
+    internal static Track Track(string Key)
 		{
 
 			return _Data[Key];
