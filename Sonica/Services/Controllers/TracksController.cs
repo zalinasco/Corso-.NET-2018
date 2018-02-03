@@ -16,7 +16,7 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Route("")]
-		public List<Track> Get(int PageNumber, int PageLenght = 10, string Album = null, string Artist = null)
+		public List<Track> Get(int PageNumber=0, int PageLenght = 10, string Album = null, string Artist = null)
 		{
 			return Indexer.List(PageNumber, PageLenght, Album, Artist);
 		}
