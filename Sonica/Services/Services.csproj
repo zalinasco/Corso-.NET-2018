@@ -140,6 +140,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\Extensions\StringExtensions.cs" />
+    <Compile Include="Classes\Helpers\FileStreamResponse.cs" />
     <Compile Include="Classes\Indexer.cs" />
     <Compile Include="Controllers\ArtistsController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
@@ -166,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Classes\Helpers\" />
     <Folder Include="Tracks\" />
   </ItemGroup>
   <ItemGroup>

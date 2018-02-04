@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".bowerrc" />
+    <Content Include="assets\script\Ajax.js" />
+    <Content Include="assets\script\Client.js" />
     <Content Include="bower.json" />
     <Content Include="assets\vendor\bootstrap\dist\css\bootstrap-theme.css.map" />
     <Content Include="assets\vendor\bootstrap\dist\css\bootstrap-theme.min.css.map" />
@@ -91,7 +93,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\script\main.js" />
+    <Content Include="assets\script\Player.js" />
     <Content Include="assets\style\main.css" />
     <Content Include="assets\vendor\bootstrap\dist\css\bootstrap-theme.css" />
     <Content Include="assets\vendor\bootstrap\dist\css\bootstrap-theme.min.css" />
@@ -257,7 +259,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="assets\img\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

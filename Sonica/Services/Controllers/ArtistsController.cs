@@ -14,7 +14,14 @@ namespace Services.Controllers
 	public class ArtistaController : ApiController
 	{
 
-		[HttpGet]
+    [HttpOptions]
+    [Route("{*all}")]
+    public HttpResponseMessage Options(string All)
+    {
+      return new HttpResponseMessage(HttpStatusCode.OK);
+    }
+
+    [HttpGet]
 		[Route("")]
 		public List<string> Get()
 		{

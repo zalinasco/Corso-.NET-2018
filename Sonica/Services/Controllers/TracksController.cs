@@ -1,4 +1,5 @@
 ﻿using Services.Classes;
+using Services.Classes.Helpers;
 using Services.Models;
 using System;
 using System.Collections.Generic;
@@ -14,19 +15,33 @@ namespace Services.Controllers
 	public class TracksController : ApiController
 	{
 
-		[HttpGet]
-		[Route("")]
-		public List<Track> Get(int PageNumber=0, int PageLenght = 10, string Album = null, string Artist = null)
+    [HttpOptions]
+    [Route("{*all}")]
+    public HttpResponseMessage Options(string All)
+    {
+      return new HttpResponseMessage(HttpStatusCode.OK);
+    }
+
+    [HttpGet]
+    [Route("")]
+		public List<Track> Get(int PageNumber=0, int PageLength = 10, string Album = null, string Artist = null)
 		{
-			return Indexer.List(PageNumber, PageLenght, Album, Artist);
+			return Indexer.List(PageNumber, PageLength, Album, Artist);
 		}
 
-		[HttpGet]
-		[Route("{Key}")]
-		public Track Get(string Key)
-		{
-			return Indexer.Track(Key);
-		}
+    [HttpGet]
+    [Route("{Key}")]
+    public Track Get(string Key)
+    {
+      return Indexer.Track(Key);
+    }
 
-	}
+    [HttpGet]
+    [Route("{Key}/stream")]
+    public HttpResponseMessage GetStream(string Key)
+    {
+      return new FileStreamResponse(Indexer.Track(Key).FilePath);
+    }
+
+  }
 }

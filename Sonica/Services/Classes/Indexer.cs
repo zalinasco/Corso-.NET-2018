@@ -152,8 +152,10 @@ namespace Services.Classes
 
     #region User interaction
 
-    internal static List<Track> List(int PageNumber, int PageLenght, string Album, string Artist)
+    internal static List<Track> List(int PageNumber, int PageLength, string Album, string Artist)
     {
+
+      Random rnd = new Random();
 
       return
         _Data
@@ -165,8 +167,13 @@ namespace Services.Classes
           &&
           (string.IsNullOrEmpty(Artist) || o.Artist == Artist)
         )
-        .Skip(PageLenght * PageNumber)
-        .Take(PageLenght)
+        .OrderBy
+        (
+          o =>
+          (string.IsNullOrEmpty(Album) ? rnd.NextDouble() : o.Number)
+        )
+        .Skip(PageLength * PageNumber)
+        .Take(PageLength)
         .ToList();
 
     }
