@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using Services.Classes.Extensions;
 using Services.Models;
 using System;
@@ -14,6 +15,7 @@ namespace Services.Classes
 {
   public class Indexer
   {
+    private static Logger _Logger = LogManager.GetCurrentClassLogger();
     private static Dictionary<string, Track> _Data = new Dictionary<string, Track>();
     private static string _LibraryRoot;
     private static string _IndexFilePath;
@@ -24,22 +26,30 @@ namespace Services.Classes
     public static void Init()
     {
 
+      _Logger.Info("Starting up");
+
       _LibraryRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["LibraryRoot"]);
+      _Logger.Info("Library root is " + _LibraryRoot);
 
       if (!Directory.Exists(_LibraryRoot))
       {
+        _Logger.Info("Creating library root");
         Directory.CreateDirectory(_LibraryRoot);
       }
 
       _IndexFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Index.json");
+      _Logger.Info("Index file path is " + _IndexFilePath);
 
       if (!File.Exists(_IndexFilePath))
       {
+        _Logger.Info("Creating index file");
         Persist();
       }
 
+      _Logger.Info("Loading index");
       Load();
 
+      _Logger.Info("Ensuring threads");
       EnsureThreads();
 
     }
@@ -47,8 +57,13 @@ namespace Services.Classes
     private static void MaintainIndex()
     {
 
+      _Logger.Info("Removing entries that can't be found");
       Remove();
+
+      _Logger.Info("Adding new entries");
       Add();
+
+      _Logger.Info("Saving index");
       Persist();
 
     }
@@ -57,6 +72,7 @@ namespace Services.Classes
     {
 
       File.WriteAllText(_IndexFilePath, JsonConvert.SerializeObject(_Data));
+      _Logger.Info("Wrote index to file");
 
     }
 
@@ -64,6 +80,7 @@ namespace Services.Classes
     {
 
       _Data = JsonConvert.DeserializeObject<Dictionary<string, Track>>(File.ReadAllText(_IndexFilePath));
+      _Logger.Info("Index contains " + _Data.Count + " entries");
 
     }
 
@@ -72,10 +89,16 @@ namespace Services.Classes
 
       foreach (string fn in Directory.EnumerateFiles(_LibraryRoot, "*.mp3", SearchOption.AllDirectories))
       {
+
+        _Logger.Info("Processing " + fn.Replace(_LibraryRoot, string.Empty));
+
         string Key = fn.Replace(_LibraryRoot, string.Empty).Base64Encode();
+
+        _Logger.Info("Key is " + Key);
 
         if (!_Data.ContainsKey(Key))
         {
+          _Logger.Info("Adding item to index");
           _Data
             .Add
             (
@@ -92,8 +115,10 @@ namespace Services.Classes
 
       foreach (string k in _Data.Keys.ToList())
       {
+        _Logger.Info("Processing " + k);
         if (!File.Exists(_Data[k].FilePath))
         {
+          _Logger.Info(_Data[k].FilePath.Replace(_LibraryRoot, string.Empty) + " does not exist anymore, removing from index");
           _Data.Remove(k);
         }
       }
@@ -108,6 +133,7 @@ namespace Services.Classes
     {
       if (_MaintenanceThread != null)
       {
+        _Logger.Info("Maintenance thread is active, terminating");
         int t = 0;
         _MaintenanceThread.Abort();
         while (_MaintenanceThread.ThreadState != System.Threading.ThreadState.Aborted && t < 10)
@@ -119,6 +145,7 @@ namespace Services.Classes
 
       if (_MaintenanceThread == null || _MaintenanceThread.ThreadState == System.Threading.ThreadState.Aborted)
       {
+        _Logger.Info("Starting maintenance thread");
         _MaintenanceThread = new Thread(new ThreadStart(MaintainLibrary));
         _MaintenanceThread.IsBackground = true;
         _MaintenanceThread.Name = "Maintenance";
@@ -126,6 +153,7 @@ namespace Services.Classes
       }
       else
       {
+        _Logger.Error("Unable to start maintenance thread because it's not in the right state.");
         throw new Exception("Unable to start TimerThread because it's not in the right state.");
       }
 
