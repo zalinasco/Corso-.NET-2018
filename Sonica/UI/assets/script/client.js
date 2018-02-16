@@ -45,6 +45,24 @@ Solution.Client = function () {
     );
   };
 
+  /**
+   * Fetches the albums. 
+   * @returns {Promise} A promise.
+   */
+	var getAlbums = function () {
+
+		return Solution.Ajax.get(
+			"albums"
+		).then(
+			function (data) {
+
+
+
+			}
+			);
+	};
+
+
   return {
     getTracks: getTracks
   };

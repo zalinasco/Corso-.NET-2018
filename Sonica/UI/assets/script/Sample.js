@@ -60,7 +60,7 @@ console.log("// -- for");
 variable2 = [
 	"uno",
 	"due",
-	"true",
+	"tre",
 	"quattro",
 	"cinque"
 ];
