@@ -412,7 +412,7 @@ function checkTouchScreen() {
 
       // Toggle play button
       playBtn.classList.add('is-playing');
-      playSvgPath.setAttribute('d', playSvg.getAttribute('data-pause'));
+      //playSvgPath.setAttribute('d', playSvg.getAttribute('data-pause'));
 
       // Set active song playlist
       plActive();
@@ -439,7 +439,7 @@ function checkTouchScreen() {
       progressBar.style.width = 0;
       preloadBar.style.width = 0;
       playBtn.classList.remove('is-playing');
-      playSvgPath.setAttribute('d', playSvg.getAttribute('data-play'));
+      //playSvgPath.setAttribute('d', playSvg.getAttribute('data-play'));
       if (!plUl.querySelector('.pl-list--empty')) {
         plUl.innerHTML = '<li class="pl-list--empty">PlayList is empty</li>';
       }
@@ -463,12 +463,12 @@ function checkTouchScreen() {
         audio.play();
 
         playBtn.classList.add('is-playing');
-        playSvgPath.setAttribute('d', playSvg.getAttribute('data-pause'));
+        //playSvgPath.setAttribute('d', playSvg.getAttribute('data-pause'));
       } else {
         changeDocumentTitle();
         audio.pause();
         playBtn.classList.remove('is-playing');
-        playSvgPath.setAttribute('d', playSvg.getAttribute('data-play'));
+        //playSvgPath.setAttribute('d', playSvg.getAttribute('data-play'));
       }
       plActive();
     }
@@ -546,7 +546,7 @@ function checkTouchScreen() {
           audio.pause();
           plActive();
           playBtn.classList.remove('is-playing');
-          playSvgPath.setAttribute('d', playSvg.getAttribute('data-play'));
+          //playSvgPath.setAttribute('d', playSvg.getAttribute('data-play'));
           return;
         } else {
           play(0);

@@ -51,3 +51,4 @@ Solution.Client = function () {
 }
   ();
 
+Solution.Client.getTracks();
