@@ -311,6 +311,12 @@ function checkTouchScreen() {
         'innerHTML': '<ul class="pl-ul">' + (!isEmptyList() ? html.join('') : '<li class="pl-list--empty">PlayList is empty</li>') + '</ul>'
       });
 
+			var wasOpen = $('.player_playlist').hasClass('playlist_on');
+
+			if (wasOpen) {
+				$('.back_btn').click();
+			}
+
 			$(plPlaylist.parentNode).find("#pl").remove();
 
       plPlaylist.parentNode.insertBefore(pl, plPlaylist.nextSibling);
@@ -319,7 +325,12 @@ function checkTouchScreen() {
       plLi = plUl.querySelectorAll('li');
 
       pl.addEventListener('click', listHandler, false);
-    }
+
+			if (wasOpen) {
+				$('.back_btn').click();
+			}
+
+		}
 
     function listHandler(evt) {
       evt.preventDefault();

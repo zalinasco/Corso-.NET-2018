@@ -59,7 +59,32 @@ Solution.Client = function () {
 				for (var i in data) {
 
 					$("#albums")
-						.append("<button class='btn btn-default' onclick='Solution.Client.getTracks(\"" + data[i] + "\")'>" + data[i] + "</button>");
+						.append(
+						"<button class='btn btn-default' onclick='Solution.Client.getTracks(\"" + data[i] + "\")'>" + data[i] + "</button>");
+
+				}
+
+			}
+			);
+	};
+
+
+  /**
+   * Fetches the artists. 
+   * @returns {Promise} A promise.
+   */
+	var getArtists = function () {
+
+		return Solution.Ajax.get(
+			"artists"
+		).then(
+			function (data) {
+
+				for (var i in data) {
+
+					$("#artists")
+						.append(
+						"<button class='btn btn-default' onclick='Solution.Client.getTracks(null, \"" + data[i] + "\")'>" + data[i] + "</button>");
 
 				}
 
@@ -70,10 +95,12 @@ Solution.Client = function () {
 
   return {
 		getTracks: getTracks,
-		getAlbums: getAlbums
+		getAlbums: getAlbums,
+		getArtists: getArtists
   };
 }
   ();
 
 Solution.Client.getTracks();
 Solution.Client.getAlbums();
+Solution.Client.getArtists();

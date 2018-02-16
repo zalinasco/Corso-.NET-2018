@@ -673,3 +673,12 @@ html {
 	.player .eq__bar:nth-child(3) {
 		animation: eq 1.2s ease-in-out infinite .6s;
 	}
+
+
+.tag-list{
+	padding: 10px;
+}
+
+.tag-list button{
+	margin: 3px;
+}
