@@ -64,9 +64,11 @@ Solution.Client = function () {
 
 
   return {
-    getTracks: getTracks
+		getTracks: getTracks,
+		getAlbums: getAlbums
   };
 }
   ();
 
 Solution.Client.getTracks();
+Solution.Client.getAlbums();
