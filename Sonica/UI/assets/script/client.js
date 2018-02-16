@@ -41,6 +41,10 @@ Solution.Client = function () {
 
         AP.init({playList: trackList});
 
+				if ($('.hamburger-menu').hasClass('slide')) {
+					$('.hamburger-menu').click();
+				}
+
       }
     );
   };
