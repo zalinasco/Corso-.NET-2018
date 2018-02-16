@@ -56,7 +56,12 @@ Solution.Client = function () {
 		).then(
 			function (data) {
 
+				for (var i in data) {
 
+					$("#albums")
+						.append("<button class='btn btn-default' onclick='Solution.Client.getTracks(\"" + data[i] + "\")'>" + data[i] + "</button>");
+
+				}
 
 			}
 			);

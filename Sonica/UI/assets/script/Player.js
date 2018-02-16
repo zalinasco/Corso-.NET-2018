@@ -131,9 +131,9 @@ function checkTouchScreen() {
         return false;
       }
 
-      if (apActive || player === null) {
-        return 'Player already init';
-      }
+      //if (apActive || player === null) {
+      //  return 'Player already init';
+      //}
 
       settings = extend(settings, options);
 
@@ -310,6 +310,8 @@ function checkTouchScreen() {
         'id': 'pl',
         'innerHTML': '<ul class="pl-ul">' + (!isEmptyList() ? html.join('') : '<li class="pl-list--empty">PlayList is empty</li>') + '</ul>'
       });
+
+			$(plPlaylist.parentNode).find("#pl").remove();
 
       plPlaylist.parentNode.insertBefore(pl, plPlaylist.nextSibling);
 
