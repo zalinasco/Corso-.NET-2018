@@ -69,6 +69,7 @@
     <Content Include=".bowerrc" />
     <Content Include="assets\script\Ajax.js" />
     <Content Include="assets\script\Client.js" />
+    <Content Include="assets\script\Sample.js" />
     <Content Include="bower.json" />
     <Content Include="assets\vendor\bootstrap\dist\css\bootstrap-theme.css.map" />
     <Content Include="assets\vendor\bootstrap\dist\css\bootstrap-theme.min.css.map" />
@@ -254,6 +255,7 @@
     <Content Include="assets\vendor\pace\themes\yellow\pace-theme-mac-osx.css" />
     <Content Include="assets\vendor\pace\themes\yellow\pace-theme-minimal.css" />
     <Content Include="index.html" />
+    <Content Include="sample.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
