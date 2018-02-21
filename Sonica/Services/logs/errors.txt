@@ -1,0 +1,5 @@
+2018-02-21 10:13:25.0632 Services.Classes.Indexer TagLib.CorruptFileException: MPEG audio header not found.
+   at TagLib.File.Create(IFileAbstraction abstraction, String mimetype, ReadStyle propertiesStyle)
+   at TagLib.File.Create(String path)
+   at Services.Classes.Indexer.GetTrack(String FilePath) in C:\Users\daniele.bruni\source\repos\Corso-.NET-2018\Sonica\Services\Classes\Indexer.cs:line 234
+   at Services.Classes.Indexer.Add() in C:\Users\daniele.bruni\source\repos\Corso-.NET-2018\Sonica\Services\Classes\Indexer.cs:line 105

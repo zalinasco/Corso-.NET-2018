@@ -17,5 +17,6 @@ namespace Services
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			Indexer.Init();
 		}
+
 	}
 }

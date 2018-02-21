@@ -85,6 +85,7 @@
     <Content Include="assets\vendor\fontawesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="assets\vendor\fontawesome\fonts\FontAwesome.otf" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
