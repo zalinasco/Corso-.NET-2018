@@ -2,7 +2,7 @@
 
 Solution.Ajax = function () {
 
-  var _apiBaseUrl = typeof ApiBaseUrl !== "undefined" ? ApiBaseUrl : "http://localhost:53997/api/";
+	var _apiBaseUrl = typeof ApiBaseUrl !== "undefined" ? ApiBaseUrl : "http://10.10.10.37:5001/api/";
 
   /**
    * Performs an asynchronous GET to the specified url, passing the provided data.
