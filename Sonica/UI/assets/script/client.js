@@ -34,7 +34,8 @@ Solution.Client = function () {
             {
               'icon': iconImage,
               'title': data[t].Title,
-              'file': ApiBaseUrl + "tracks/" + data[t].Key + "/stream"
+							'file': ApiBaseUrl + "tracks/" + data[t].Key + "/stream",
+							'imageurl': data[t].BackdropImageURL
             }
           )
         }

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Web;
 
@@ -19,9 +21,17 @@ namespace Services.Classes
     private static string _IndexFilePath;
     private static Thread _MaintenanceThread = null;
 
-    #region Library maintenance
+		private static Tuple<DateTime, TokenResponse> TokenStorage = new Tuple<DateTime, TokenResponse>(DateTime.MinValue, null);
 
-    public static void Init()
+		internal static readonly HttpClient tokenRequestClient = new HttpClient();
+		internal static readonly HttpClient apiClient = new HttpClient();
+
+		private const string _TokenRequestURL = "https://accounts.spotify.com/api/token";
+		private const string _SearchURLTemplate = "https://api.spotify.com/v1/search?q={0}&type={1}";
+
+		#region Library maintenance
+
+		public static void Init()
     {
 
       _LibraryRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["LibraryRoot"]);
@@ -38,7 +48,10 @@ namespace Services.Classes
         Persist();
       }
 
-      Load();
+			var byteArray = Encoding.ASCII.GetBytes(ConfigurationManager.AppSettings["ClientID"] + ":" + ConfigurationManager.AppSettings["ClientSecret"]);
+			tokenRequestClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+			Load();
 
       EnsureThreads();
 
@@ -100,11 +113,50 @@ namespace Services.Classes
 
     }
 
-    #endregion
+		private static void EnsureToken()
+		{
+			if (TokenStorage.Item1 > DateTime.Now)
+			{
+				return;
+			}
 
-    #region Threads
+			var tokenRequestArguments = new Dictionary<string, string>
+			{
+				 { "grant_type", "client_credentials" }
+			};
 
-    private static void EnsureThreads()
+			var tokenRequestContent = new FormUrlEncodedContent(tokenRequestArguments);
+
+			var tokenRequestResponse = tokenRequestClient.PostAsync(_TokenRequestURL, tokenRequestContent).Result;
+
+			var tokenRequestResponseString = tokenRequestResponse.Content.ReadAsStringAsync().Result;
+
+			TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(tokenRequestResponseString);
+
+			DateTime expire = DateTime.Now.AddSeconds(token.expires_in);
+
+			TokenStorage = new Tuple<DateTime, TokenResponse>(expire, token);
+
+		}
+
+		private static Models.SearchResponse.Response SearchArtist(string Artist)
+		{
+			EnsureToken();
+
+			apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(TokenStorage.Item2.token_type, TokenStorage.Item2.access_token);
+
+			var searchRequestResponse = apiClient.GetAsync(string.Format(_SearchURLTemplate, Uri.EscapeDataString(Artist), "artist")).Result;
+
+			var searchRequestResponseString = searchRequestResponse.Content.ReadAsStringAsync().Result;
+
+			return JsonConvert.DeserializeObject<Models.SearchResponse.Response>(searchRequestResponseString);
+		}
+
+		#endregion
+
+		#region Threads
+
+		private static void EnsureThreads()
     {
       if (_MaintenanceThread != null)
       {
@@ -185,6 +237,8 @@ namespace Services.Classes
 
     }
 
+		private static Dictionary<string, Models.SearchResponse.Response> ArtistsCache = new Dictionary<string, Models.SearchResponse.Response>();
+
     private static Track GetTrack(string FilePath)
     {
 
@@ -202,7 +256,24 @@ namespace Services.Classes
       r.Number = tagReader.Tag.Track;
       r.Duration = tagReader.Length;
 
-      return r;
+			Models.SearchResponse.Response artists;
+
+			if (!ArtistsCache.ContainsKey(r.Artist))
+			{
+				artists = SearchArtist(r.Artist);
+				ArtistsCache.Add(r.Artist, artists);
+			}
+			else
+			{
+				artists = ArtistsCache[r.Artist];
+			}
+
+			if(artists.artists.total > 0)
+			{
+				r.BackdropImageURL = artists.artists.items[0].images.OrderBy(o => o.width).Select(o => o.url).FirstOrDefault();
+			}
+
+			return r;
 
     }
 

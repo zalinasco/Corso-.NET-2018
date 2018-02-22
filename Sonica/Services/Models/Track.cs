@@ -47,6 +47,7 @@ namespace Services.Models
 			get; set;
 		}
 
+		public string BackdropImageURL { get; set; }
 
 	}
 

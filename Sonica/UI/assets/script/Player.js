@@ -100,7 +100,7 @@ function checkTouchScreen() {
       plUl,
       plLi,
       tplList =
-        '<li class="player_playlist_item pl-list" data-track="{count}">' +
+        '<li class="player_playlist_item pl-list" data-image-url="{imageurl}" data-track="{count}">' +
         '<div class="pl-list__track">' +
         '<div class="pl-list__icon"></div>' +
         '<div class="pl-list__eq">' +
@@ -301,7 +301,7 @@ function checkTouchScreen() {
 
       playList.forEach(function (item, i) {
         html.push(
-          tplList.replace('{count}', i).replace('{title}', item.title)
+					tplList.replace('{count}', i).replace('{title}', item.title).replace('{imageurl}', item.imageurl)
         );
       });
 
@@ -393,7 +393,8 @@ function checkTouchScreen() {
       for (var i = 0, len = plLi.length; len > i; i++) {
         plLi[i].classList.remove('pl-list--current');
       }
-      plLi[current].classList.add('pl-list--current');
+			plLi[current].classList.add('pl-list--current');
+			$(".no_album_img").css("background-image", "url(" + $(plLi[current]).attr("data-image-url") + ")");
     }
 
     /**
