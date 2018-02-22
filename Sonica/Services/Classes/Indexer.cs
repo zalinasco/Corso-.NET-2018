@@ -207,7 +207,12 @@ namespace Services.Classes
     internal static List<Track> List(int PageNumber, int PageLength, string Album, string Artist)
     {
 
-      Random rnd = new Random();
+			Func<uint> Random = () => 
+			{
+				Random rnd = new Random();
+				return (uint)rnd.Next();
+			};
+
 
       return
         _Data
@@ -222,7 +227,7 @@ namespace Services.Classes
         .OrderBy
         (
           o =>
-          (string.IsNullOrEmpty(Album) ? rnd.NextDouble() : o.Number)
+          (string.IsNullOrEmpty(Album) ? Random() : o.Number)
         )
         .Skip(PageLength * PageNumber)
         .Take(PageLength)
