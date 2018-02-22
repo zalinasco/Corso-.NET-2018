@@ -12,6 +12,9 @@ namespace SpotifySample
 {
 	class Program
 	{
+
+		private static Tuple<DateTime, TokenResponse> TokenStorage = new Tuple<DateTime, TokenResponse>(DateTime.MinValue, null);
+
 		internal static readonly HttpClient tokenRequestClient = new HttpClient();
 		internal static readonly HttpClient apiClient = new HttpClient();
 
@@ -27,6 +30,32 @@ namespace SpotifySample
 		static void Main(string[] args)
 		{
 
+			for(int i = 0; i<10; i++)
+			{ 
+				PerformSearch();
+			}
+		}
+
+		private static void PerformSearch()
+		{
+			EnsureToken();
+
+			apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(TokenStorage.Item2.token_type, TokenStorage.Item2.access_token);
+
+			var searchRequestResponse = apiClient.GetAsync(string.Format(_SearchURLTemplate, "ACDC", "artist")).Result;
+
+			var searchRequestResponseString = searchRequestResponse.Content.ReadAsStringAsync().Result;
+
+			SearchResponse.Response searchresponse = JsonConvert.DeserializeObject<SearchResponse.Response>(searchRequestResponseString);
+		}
+
+		private static void EnsureToken()
+		{
+			if(TokenStorage.Item1 > DateTime.Now)
+			{
+				return;
+			}
+
 			var tokenRequestArguments = new Dictionary<string, string>
 			{
 				 { "grant_type", "client_credentials" }
@@ -40,13 +69,10 @@ namespace SpotifySample
 
 			TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(tokenRequestResponseString);
 
-			apiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token.token_type, token.access_token);
+			DateTime expire = DateTime.Now.AddSeconds(token.expires_in);
 
-			var searchRequestResponse = apiClient.GetAsync(string.Format(_SearchURLTemplate, "ACDC", "artist")).Result;
+			TokenStorage = new Tuple<DateTime, TokenResponse>(expire, token);
 
-			var searchRequestResponseString = searchRequestResponse.Content.ReadAsStringAsync().Result;
-
-			SearchResponse.Response searchresponse = JsonConvert.DeserializeObject<SearchResponse.Response>(searchRequestResponseString);
 		}
 	}
 }
