@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{6A027FC1-5EA2-4FF9-8CB3-007B2A1699B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifySample", "SpotifySample\SpotifySample.csproj", "{BB808B5C-62BC-4E44-AFB6-FE7ECF391BA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6A027FC1-5EA2-4FF9-8CB3-007B2A1699B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A027FC1-5EA2-4FF9-8CB3-007B2A1699B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A027FC1-5EA2-4FF9-8CB3-007B2A1699B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB808B5C-62BC-4E44-AFB6-FE7ECF391BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB808B5C-62BC-4E44-AFB6-FE7ECF391BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB808B5C-62BC-4E44-AFB6-FE7ECF391BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB808B5C-62BC-4E44-AFB6-FE7ECF391BA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
